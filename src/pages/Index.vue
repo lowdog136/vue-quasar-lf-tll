@@ -1,10 +1,8 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="../assets/image/fcsever_logo.png"
-      style="width: 500px; height: 500px"
-    >
+    <div class="q-mt-md q-gutter-md">
+      <q-icon name="coffee_maker" color="primary" size="250px" />
+    </div>
   </q-page>
 </template>
 

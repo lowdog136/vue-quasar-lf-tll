@@ -11,8 +11,8 @@
 
       <q-btn
         class="q-mt-xl"
-        color="white"
-        text-color="blue"
+        color="green-10"
+        text-color="green"
         unelevated
         to="/"
         label="Домой"

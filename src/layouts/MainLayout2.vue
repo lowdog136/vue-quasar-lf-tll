@@ -10,21 +10,8 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-        <!--         <q-btn
-                  flat
-                  dense
-                  round
-                  icon="scoreboard"
-                  aria-label="Menu"
-             @click="toggleLeftDrawer"
-                />
-        <q-footer reveal elevated>
-                  <q-toolbar class="glossy">
-                    <q-toolbar-title>Footer</q-toolbar-title>
-                  </q-toolbar>
-                </q-footer>-->
         <q-toolbar-title>
-          SeverFans
+          LiteForex
         </q-toolbar-title>
         <div>
             <q-btn flat dense round icon="login" @click="dialog = true" />
@@ -55,7 +42,6 @@
           Навигация
         </q-item-label>
           <NewsDrawer />
-          <NewsDrawerResultGame />
       </q-list>
     </q-drawer>
     <q-page-container>
@@ -69,12 +55,11 @@
 import { defineComponent, ref, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import NewsDrawer from 'components/NewsDrawer'
-import NewsDrawerResultGame from 'components/NewsDrawerResultGame'
 import AuthPanel from 'components/Auth/AuthPanel'
 
 export default defineComponent({
   name: 'MainLayout2',
-  components: { AuthPanel, NewsDrawerResultGame, NewsDrawer },
+  components: { AuthPanel, NewsDrawer },
   setup () {
     const leftDrawerOpen = ref(false)
     const leftDrawerOpenResultGame = ref(false)
