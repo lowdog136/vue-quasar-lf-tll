@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-mt-md q-gutter-md">
-      <q-icon name="coffee_maker" color="primary" size="250px" />
+      <q-icon name="airline_stops" color="primary" size="250px" />
     </div>
   </q-page>
 </template>

@@ -6,6 +6,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: '/Save', name: 'Save', component: () => import('pages/Save') },
+      { path: '/SaveResult', name: 'SaveResult', component: () => import('pages/SaveResult') },
       { path: '/Contact', name: 'Contact', component: () => import('pages/Contact.vue') },
       { path: '/Fanats', name: 'Fanats', component: () => import('pages/Fanats.vue') },
       { path: '/Foto', name: 'Foto', component: () => import('pages/Foto.vue') },
@@ -54,6 +55,7 @@ const routes = [
         meta: { requiresAuth: true },
         component: () => import('layouts/MainLayout2.vue'),
         children: [
+          { path: '/Trest6', name: 'Trest6', component: () => import('pages/Trest/Trest6.vue') },
           { path: '/Trest5', name: 'Trest5', component: () => import('pages/Trest/Trest5.vue') },
           { path: '/Trest4', name: 'Trest4', component: () => import('pages/Trest/Trest4.vue') },
           { path: '/Trest3', name: 'Trest3', component: () => import('pages/Trest/Trest3.vue') },

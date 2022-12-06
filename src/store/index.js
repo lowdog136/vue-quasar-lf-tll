@@ -26,9 +26,9 @@ export default store(function (/* { ssrContext } */) {
       // Дата обновления новостей о команде
       // NavigationReleaseNewsSite: '04.07.22',
       // Дата обновления календаря чемпионата
-      GamesNowEventUpdateDate: '04.07.22',
+      GamesNowEventUpdateDate: '2022-09-05',
       // Дата обновления таблицы чемпионата
-      GamesNowTableUpdateDate: '04.07.22',
+      GamesNowTableUpdateDate: '2022-09-05',
       posts: JSON.parse(localStorage.getItem('posts') || '[]'),
       tours: [
         {
@@ -63,13 +63,55 @@ export default store(function (/* { ssrContext } */) {
         },
         {
           id: 6,
-          name: '5 тур',
+          name: '6 тур',
           other: '',
           count: ''
         },
         {
           id: 7,
           name: '7 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 8,
+          name: '8 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 9,
+          name: '9 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 10,
+          name: '10 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 11,
+          name: '11 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 12,
+          name: '12 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 13,
+          name: '13 тур',
+          other: '',
+          count: ''
+        },
+        {
+          id: 14,
+          name: '14 тур',
           other: '',
           count: ''
         }
@@ -178,23 +220,23 @@ export default store(function (/* { ssrContext } */) {
         },
         {
           id: 2,
-          Name: 'ФК Север',
-          Caption: 'О клубе, новости, стадион'
+          Name: 'Записать игрока',
+          Caption: 'Внести данные о новом игроке'
         },
         {
           id: 3,
-          Name: 'Новости клуба',
-          Caption: 'Последние известия'
+          Name: 'Записать результат',
+          Caption: 'Внести данные о сыграном матче'
         },
         {
           id: 4,
-          Name: 'Клуб',
-          Caption: 'О клубе'
+          Name: 'Таблица',
+          Caption: 'Глянуть рейтинг'
         },
         {
           id: 5,
-          Name: 'Стадион',
-          Caption: 'Стадион'
+          Name: 'Информация',
+          Caption: 'Полезная информация'
         },
         {
           id: 6,
@@ -475,10 +517,11 @@ export default store(function (/* { ssrContext } */) {
       InsertValue: [],
       myCount: 2,
       ratingNewsCard: 0,
-      count: 'Июнь 29, 2022',
+      count: '1',
       uid: 'wTZJonX7ZaWDPXOikF8gfzfvwfm1',
       NewsCardHowWatch: 0,
-      user: null
+      user: null,
+      event: null
     },
     mutations: {
       SET_USER (state, user) {
@@ -489,6 +532,9 @@ export default store(function (/* { ssrContext } */) {
       },
       clearCount (state) {
         state.myCount = null
+      },
+      lenCounter (state) {
+        state.myCount = 666
       },
       CLEAR_USER (state) {
         state.user = null
@@ -520,16 +566,22 @@ export default store(function (/* { ssrContext } */) {
       userName (state) {
         return state.user.email
       },
+      eventListDay (state) {
+        return state.event
+      },
       ratingNewsCardUp (state) {
         return state.ratingNewsCard
       },
       dropDown (state) {
-        return state.colorCode
+        return state.myCount
       },
       validPosts (state) {
         return state.posts.filter(p => {
           return p.title && p.body
         })
+      },
+      doublemyCount (state) {
+        return state.myCount.length
       },
       allPosts (state) {
         return state.posts
@@ -613,6 +665,9 @@ export default store(function (/* { ssrContext } */) {
       },
       myCountUp ({ commit }) {
         commit('incrementCounter')
+      },
+      myCountLen ({ commit }) {
+        commit('lenCounter')
       },
       ratingNewsCardUp ({ commit }) {
         commit('ratingNewsCardUp')

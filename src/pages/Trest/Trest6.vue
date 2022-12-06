@@ -1,42 +1,78 @@
 <template>
   <div class="q-px-lg q-pb-md">
-    <div class="title">
+        <div class="title">
       {{titleMainEvent }}
     </div>
-    <q-timeline :layout="layout" color="secondary" v-for="game in games.slice(id).reverse()" :key="game.id">
-      <q-timeline-entry heading>{{ game.mounth }}</q-timeline-entry>
-      <q-timeline-entry
-        v-for="matchEvent in game.matchEvents.slice(id).reverse()" :key="matchEvent.id"
-        :title='titleEvent'
-        :subtitle=matchEvent.data
-        side="left"
-        :color=matchEvent.color
-        :icon=matchEvent.icon
-      >
+    <div>
+      <div v-for="item in events.slice(id).reverse()" :key="item.id">
         <div>
-          {{ matchEvent.tour}}
+          {{ item.id }}
+          <p>date:{{ item.date }}</p>
+          <p>mounth:{{ item.mounth }}</p>
+          <p>nameEvent:{{ item.nameEvent }}</p>
+          ---
         </div>
+      </div>
+    </div>
+    <q-separator color="primary"/>
+    <div>
+      <div v-for="itemM in eventsMounth.slice(id).reverse()" :key="itemM.id">
         <div>
-          {{ matchEvent.nameEvent}}
-          <q-item-label caption>планируют посетить: {{ matchEvent.planeVisitCount }}</q-item-label>
+          {{ itemM }}
         </div>
-      </q-timeline-entry>
-    </q-timeline>
+      </div>
+      <div v-for="itemM in eventsMounthL.slice(id).reverse()" :key="itemM.id">
+        <div>
+          {{ itemM }}
+        </div>
+      </div>
+    </div>
+    <q-separator color="primary"/>
+    <div>
+      <div v-for="itemM in matchEvents.slice(id).reverse()" :key="itemM.id">
+        <div>
+          {{ itemM }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase'
 import { useQuasar } from 'quasar'
-import { computed, ref } from 'vue'
-import { collection, onSnapshot } from 'firebase/firestore'
-import { db } from 'src/firebase'
-// import NewsCardDetailPopUp from 'components/NewsCardDetailPopUp'
+
+const eventsCollectionRef = collection(db, 'siteEvents')
 
 export default {
-  name: 'eventSZFO',
+  name: 'trest6',
   components: {},
   data () {
     return {
+      tames: [
+        {
+          id: 1,
+          mounth: 'Май, 2022'
+        },
+        {
+          id: 2,
+          mounth: 'Июнь, 2022'
+        },
+        {
+          id: 3,
+          mounth: 'Июль, 2022'
+        },
+        {
+          id: 4,
+          mounth: 'Август, 2022'
+        },
+        {
+          id: 5,
+          mounth: 'Сентябрь, 2022'
+        }
+      ],
       games: [
         {
           id: 1,
@@ -144,17 +180,17 @@ export default {
             {
               id: 3,
               tour: '10 тур',
-              nameEvent: 'ФК "Север" 2-1 СШ №2 ВО "Звезда"',
-              color: 'orange-14',
+              nameEvent: 'ФК "Север" - СШ №2 ВО "Звезда"',
+              color: 'teal',
               data: 'август 13, 2022',
-              icon: 'done_all',
+              icon: 'event',
               planeVisitCount: 0
             },
             {
               id: 4,
               tour: '11 тур',
-              nameEvent: 'СШ №7 Карелия 0-7 ФК "Север"',
-              color: 'orange-14',
+              nameEvent: 'СШ №7 Карелия - ФК "Север"',
+              color: 'teal',
               data: 'август 20, 2022',
               icon: 'sentiment_very_satisfied',
               planeVisitCount: 0
@@ -162,8 +198,8 @@ export default {
             {
               id: 5,
               tour: '12 тур',
-              nameEvent: 'ФК "Химик" 0-0 ФК "Север"',
-              color: 'orange-14',
+              nameEvent: 'ФК "Химик" - ФК "Север"',
+              color: 'teal',
               data: 'август 25, 2022',
               icon: 'event',
               planeVisitCount: 0
@@ -197,9 +233,28 @@ export default {
       ]
     }
   },
-  setup () {
-    const $q = useQuasar()
+  setup: function () {
+    const events = ref([])
+    const eventsMounth = ref([])
+    const eventsMounthL = ref([])
     const matchEvents = ref([])
+    onSnapshot(collection(db, 'siteEvents'), (querySnapshot) => {
+      const fbEvents = []
+      querySnapshot.forEach((doc) => {
+        const event = {
+          id: doc.id,
+          color: doc.data().color,
+          date: doc.data().date,
+          icon: doc.data().icon,
+          mounth: doc.data().mounth,
+          nameEvent: doc.data().nameEvent,
+          tour: doc.data().tour
+        }
+        fbEvents.push(event)
+      })
+      events.value = fbEvents
+      console.log('fbEvents', events.value)
+    })
     onSnapshot(collection(db, 'eventsTeams'), (querySnapshot) => {
       const fbEventsMounth = []
       querySnapshot.forEach((doc) => {
@@ -214,11 +269,50 @@ export default {
       // console.log(doc)
       console.log('matchEvents', matchEvents.value)
     })
+    onSnapshot(collection(db, 'siteEventsMounth/os/win'), (querySnapshot) => {
+      const fbEventsMounth = []
+      querySnapshot.forEach((doc) => {
+        const eventMounth = {
+          id: doc.id,
+          name: doc.data().name,
+          color: doc.data().color
+        }
+        fbEventsMounth.push(eventMounth)
+      })
+      eventsMounth.value = fbEventsMounth
+      console.log(doc)
+      // console.log('fbEventsMounth', eventsMounth.value)
+    })
+    onSnapshot(collection(db, 'siteEventsMounth/os/linux'), (querySnapshot) => {
+      const fbEventsMounth = []
+      querySnapshot.forEach((doc) => {
+        const eventMounthL = {
+          id: doc.id,
+          name: doc.data().name,
+          color: doc.data().color
+        }
+        fbEventsMounth.push(eventMounthL)
+      })
+      eventsMounthL.value = fbEventsMounth
+      console.log(doc)
+      // console.log('fbEventsMounth', eventsMounth.value)
+    })
+    const toggleDone = id => {
+      const index = events.value.findIndex(event => event.id === id)
+      updateDoc(doc(eventsCollectionRef, id), {
+        done: !events.value[index].done
+      })
+    }
+    const $q = useQuasar()
 
     return {
       titleEvent: 'Чемпионат СЗФО',
-      btnSize: 'xs',
+      toggleDone,
+      events,
+      eventsMounth,
       matchEvents,
+      eventsMounthL,
+      btnSize: 'xs',
       titleMainEvent: 'Календарь игр ФК "Север" в 2022 году',
       layout: computed(() => {
         return $q.screen.lt.sm ? 'dense' : ($q.screen.lt.md ? 'comfortable' : 'loose')

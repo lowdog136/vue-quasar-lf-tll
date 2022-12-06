@@ -23,9 +23,7 @@
             <q-menu transition-show="rotate" transition-hide="rotate">
               <div class="row no-wrap q-pa-md">
                 <div class="column">
-                  <div class="text-h6 q-mb-md" >Настройки</div>
-                  <q-btn flat dense to="/User/UserProfile" label="Профиль" />
-                  <q-toggle disable v-model="dark_mode" label="Ночной режим" />
+                  <SettingsListUser />
                 </div>
 
                 <q-separator vertical inset class="q-mx-lg" />
@@ -34,9 +32,7 @@
                   <q-avatar size="72px">
                     <img src="https://cdn.quasar.dev/img/avatar4.jpg">
                   </q-avatar>
-
                   <div class="text-subtitle1 q-mt-md q-mb-xs">{{ $store.state.user.email }} </div>
-
                   <q-btn
                     color="primary"
                     @click="$store.dispatch('logout')"
@@ -74,10 +70,11 @@
 
 import { defineComponent, ref, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+import SettingsListUser from 'components/Profile/SettingsListUser'
 
 export default defineComponent({
   name: 'LayoutUserPage',
-  components: {},
+  components: { SettingsListUser },
   setup () {
     const leftDrawerOpen = ref(false)
     const leftDrawerOpenResultGame = ref(false)
