@@ -10,7 +10,7 @@
         clearable
       >
         <template v-slot:after>
-          <q-checkbox v-model="val" />
+          <q-checkbox @submit="onSubmit" v-model="val" />
         </template>
       </q-input>
 
@@ -23,7 +23,7 @@
         clearable
       >
         <template v-slot:after>
-          <q-checkbox v-model="val2" />
+          <q-checkbox @submit="onSubmit" v-model="val2" />
         </template>
       </q-input>
 
@@ -42,7 +42,19 @@
           class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
         >
           {{ item.name }} = {{ item.value }}
-          {{item.val2}}
+        </div>
+      </q-card-section>
+    </q-card>
+    <q-card v-if="submitResult === false" flat bordered class="q-mt-md bg-grey-2">
+      <q-card-section>Submitted form contains the following formData (key = value):</q-card-section>
+      <q-separator />
+      <q-card-section class="row q-gutter-sm items-center">
+        <div
+          v-for="(item, index) in submitResult"
+          :key="index"
+          class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
+        >
+          {{ item.name }} = {{ item.value }}
         </div>
       </q-card-section>
     </q-card>
@@ -55,6 +67,7 @@ import { ref } from 'vue'
 export default {
   setup () {
     const submitResult = ref([])
+    const onSubmitCheck = ref([])
 
     return {
       val: ref(true),
@@ -62,6 +75,7 @@ export default {
       name: ref('Player A'),
       name2: ref('Player B'),
       submitResult,
+      onSubmitCheck,
 
       onSubmit (evt) {
         const formData = new FormData(evt.target)
