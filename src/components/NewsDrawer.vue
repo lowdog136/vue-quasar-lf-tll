@@ -9,7 +9,7 @@
         <q-item-label caption>{{ $store.state.NavigationListMenu[0].Caption }}</q-item-label>
       </q-item-section>
     </q-item>
-    <q-item clickable v-ripple to="Save">
+    <q-item clickable v-ripple to="SaveResult">
       <q-item-section avatar>
         <q-icon name="edit_calendar" />
       </q-item-section>
