@@ -65,6 +65,7 @@
 import { ref } from 'vue'
 
 export default {
+  name: 'SaveResultMatch',
   setup () {
     const submitResult = ref([])
     const onSubmitCheck = ref([])
