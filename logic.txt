@@ -1,0 +1,18 @@
+запись результата матча
+-id
+-date
+-player A
+--id player
+--win: true
+--- if win == true score +3
+-player B
+--id player
+--win: false
+--- if win == false score -3
+
+Таблица:
+-id player
+-score
+-stats:
+--win
+--lose
