@@ -9,6 +9,33 @@
         <q-item-label caption>{{ $store.state.NavigationListMenu[0].Caption }}</q-item-label>
       </q-item-section>
     </q-item>
+    <q-item clickable v-ripple to="/SaveResult">
+      <q-item-section avatar>
+        <q-icon name="note_add" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ $store.state.NavigationListMenu[2].Name }}</q-item-label>
+        <q-item-label caption>{{ $store.state.NavigationListMenu[2].Caption }}</q-item-label>
+      </q-item-section>
+    </q-item>
+    <q-item clickable v-ripple to="/LeaderBoard">
+      <q-item-section avatar>
+        <q-icon name="leaderboard" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ $store.state.NavigationListMenu[3].Name }}</q-item-label>
+        <q-item-label caption>{{ $store.state.NavigationListMenu[3].Caption }}</q-item-label>
+      </q-item-section>
+    </q-item>
+    <q-item clickable v-ripple to="/">
+      <q-item-section avatar>
+        <q-icon name="info" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ $store.state.NavigationListMenu[4].Name }}</q-item-label>
+        <q-item-label caption>{{ $store.state.NavigationListMenu[4].Caption }}</q-item-label>
+      </q-item-section>
+    </q-item>
     <q-item clickable v-ripple to="SaveResult">
       <q-item-section avatar>
         <q-icon name="edit_calendar" />
