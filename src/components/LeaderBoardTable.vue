@@ -2,6 +2,15 @@
   <div class="q-pa-md">
     <q-form @submit="onSubmit" class="q-gutter-md">
       <div>
+        1 место
+      </div>
+      <div>
+        2 место
+      </div>
+      <div>
+        3 место
+      </div>
+      <div>
         <q-btn label="Посмотреть всю таблицу" type="submit" color="primary"/>
       </div>
     </q-form>
