@@ -59,22 +59,66 @@
       </q-card-section>
     </q-card>
   </div>
+  <div>
+    <div v-for="SaveResult in SaveResults" :key="SaveResult.id">
+      <ul>{{ SaveResult.id }}</ul>
+      <ul>{{ SaveResult.playerA }} </ul>
+      <ul> {{ SaveResult.playerB }}</ul>
+      <q-separator />
+    </div>
+  </div>
+  <div>
+    <label for="myBrowser">Choose a browser from this list:</label>
+    <input list="browsers" id="myBrowser" name="myBrowser" />
+    <datalist id="browsers">
+      <option value="Chrome" />
+      <option value="Firefox" />
+      <option value="Internet Explorer" />
+      <option value="Opera" />
+      <option value="Safari" />
+      <option value="Microsoft Edge" />
+    </datalist>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from 'src/firebase'
+
+// NewsCard block
+const saveResultCollectionRef = collection(db, 'resultMatch')
+const saveResultCollectionQuery = query(saveResultCollectionRef, orderBy('date', 'desc'))
 
 export default {
   name: 'SaveResultMatch',
   setup () {
     const submitResult = ref([])
     const onSubmitCheck = ref([])
+    const SaveResults = ref([])
+    onMounted(async () => {
+      // saveResult Module
+      onSnapshot(saveResultCollectionQuery, (querySnapshot) => {
+        const fbSaveResult = []
+        querySnapshot.forEach((doc) => {
+          const NewsCard = {
+            id: doc.id,
+            playerA: doc.data().playerA,
+            playerB: doc.data().playerB,
+            date: doc.data().date
+          }
+          fbSaveResult.push(NewsCard)
+        })
+        SaveResults.value = fbSaveResult
+      })
+    })
 
     return {
       val: ref(true),
       val2: ref(true),
       name: ref('Player A'),
       name2: ref('Player B'),
+      SaveResults,
       submitResult,
       onSubmitCheck,
 
