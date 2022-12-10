@@ -3,12 +3,12 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDrf5-3zYXtRO2e5cb1LNoBzou_WNdFdYU',
-  authDomain: 'sf-quasar-aut.firebaseapp.com',
-  projectId: 'sf-quasar-aut',
-  storageBucket: 'sf-quasar-aut.appspot.com',
-  messagingSenderId: '912819178667',
-  appId: '1:912819178667:web:4d5a697cf7a9db3333fbee'
+  apiKey: 'AIzaSyDDia5rtXZVcI4szxUj0oXupZjmKmaw8B4',
+  authDomain: 'lf-tll.firebaseapp.com',
+  projectId: 'lf-tll',
+  storageBucket: 'lf-tll.appspot.com',
+  messagingSenderId: '1013864039845',
+  appId: '1:1013864039845:web:d49e07c510f5c0e547144c'
 }
 
 const app = initializeApp(firebaseConfig)
