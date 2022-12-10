@@ -66,18 +66,13 @@
       <ul> {{ SaveResult.playerB }}</ul>
       <q-separator />
     </div>
-  </div>
-  <div>
-    <label for="myBrowser">Choose a browser from this list:</label>
-    <input list="browsers" id="myBrowser" name="myBrowser" />
-    <datalist id="browsers">
-      <option value="Chrome" />
-      <option value="Firefox" />
-      <option value="Internet Explorer" />
-      <option value="Opera" />
-      <option value="Safari" />
-      <option value="Microsoft Edge" />
-    </datalist>
+    <div>
+      <label for="myBrowser">Choose a browser from this list:</label>
+      <input list="browsers" v-model="item" lists="SaveResults" id="myBrowser" name="myBrowser" />
+      <datalist id="browsers">
+        <option v-for="item in SaveResults" :key="item.id" /> {{item}}
+      </datalist>
+    </div>
   </div>
 </template>
 
@@ -96,6 +91,7 @@ export default {
     const submitResult = ref([])
     const onSubmitCheck = ref([])
     const SaveResults = ref([])
+    const item = ref([])
     onMounted(async () => {
       // saveResult Module
       onSnapshot(saveResultCollectionQuery, (querySnapshot) => {
@@ -119,6 +115,7 @@ export default {
       name: ref('Player A'),
       name2: ref('Player B'),
       SaveResults,
+      item,
       submitResult,
       onSubmitCheck,
 
