@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios'
 import SaveResultMatch from 'components/SaveResultMatch'
-const baseURL = 'http://localhost:3001'
 
 export default {
   name: 'SaveResult',
@@ -16,14 +14,6 @@ export default {
     return {
       trueValue: true,
       falseValue: false
-    }
-  },
-  async created () {
-    try {
-      const res = await axios.get(`${baseURL}/resultGames`)
-      this.resultGames = res.data
-    } catch (error) {
-      console.log(error)
     }
   },
   props: {

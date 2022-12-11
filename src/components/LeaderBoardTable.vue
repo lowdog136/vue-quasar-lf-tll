@@ -1,63 +1,55 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-gutter-md">
+    <div v-for="SaveResult in LeaderBoards" :key="SaveResult.id">
+      <ul>id: {{ SaveResult.id }}</ul>
+      <ul>playerA: {{ SaveResult.title }} </ul>
+      <q-separator />
+    </div>
     <q-form @submit="onSubmit" class="q-gutter-md">
       <div>
-        1 место
-      </div>
-      <div>
-        2 место
-      </div>
-      <div>
-        3 место
-      </div>
-      <div>
-        <q-btn label="Посмотреть всю таблицу" type="submit" color="primary"/>
+        <q-btn label="Show tables" type="submit" color="primary"/>
       </div>
     </q-form>
-
-    <q-card v-if="submitResult.length > 0" flat bordered class="q-mt-md bg-grey-2">
-      <q-card-section>Submitted form contains the following formData (key = value):</q-card-section>
-      <q-separator />
-      <q-card-section class="row q-gutter-sm items-center">
-        <div
-          v-for="(item, index) in submitResult"
-          :key="index"
-          class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
-        >
-          {{ item.name }} = {{ item.value }}
-        </div>
-      </q-card-section>
-    </q-card>
-    <q-card v-if="submitResult === false" flat bordered class="q-mt-md bg-grey-2">
-      <q-card-section>Submitted form contains the following formData (key = value):</q-card-section>
-      <q-separator />
-      <q-card-section class="row q-gutter-sm items-center">
-        <div
-          v-for="(item, index) in submitResult"
-          :key="index"
-          class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
-        >
-          {{ item.name }} = {{ item.value }}
-        </div>
-      </q-card-section>
-    </q-card>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from 'src/firebase'
+
+// NewsCard block
+const saveResultCollectionRef = collection(db, 'playerList')
+const saveResultCollectionQuery = query(saveResultCollectionRef, orderBy('date', 'desc'))
 
 export default {
   name: 'LeaderBoardTable',
   setup () {
     const submitResult = ref([])
     const onSubmitCheck = ref([])
+    const LeaderBoards = ref([])
+    const item = ref([])
+    onMounted(async () => {
+      // saveResult Module
+      onSnapshot(saveResultCollectionQuery, (querySnapshot) => {
+        const fbSaveResult = []
+        querySnapshot.forEach((doc) => {
+          const NewsCard = {
+            id: doc.id,
+            title: doc.data().title
+          }
+          fbSaveResult.push(NewsCard)
+          console.log(NewsCard)
+        })
+        LeaderBoards.value = fbSaveResult
+      })
+    })
 
     return {
       val: ref(true),
       val2: ref(true),
-      name: ref('Player A'),
-      name2: ref('Player B'),
+      LeaderBoards,
+      item,
       submitResult,
       onSubmitCheck,
 
