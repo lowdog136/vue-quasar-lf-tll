@@ -1,89 +1,88 @@
 <template>
-  <div class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
-      <q-input
-        name="name"
-        v-model="name"
-        color="primary"
-        label="Player A"
-        filled
-        clearable
+  <div class="q-pa-md row items-start q-gutter-md">
+    <div class="q-pa-md">
+      <q-form
+        class="q-gutter-md"
       >
-        <template v-slot:after>
-          <q-checkbox @submit="onSubmit" v-model="val" />
-        </template>
-      </q-input>
+        <div>
+          <q-input
+            v-model='addPlayerA'
+            hint="add SubTitle"
+            lazy-rules
+          />
+          <q-input
+            v-model='addPlayerB'
+            hint="add Title"
+            lazy-rules
+          />
 
-      <q-input
-        name="name"
-        v-model="name2"
-        color="primary"
-        label="Player B"
-        filled
-        clearable
-      >
-        <template v-slot:after>
-          <q-checkbox @submit="onSubmit" v-model="val2" />
-        </template>
-      </q-input>
-
-      <div>
-        <q-btn label="Save Result Match" type="submit" color="primary"/>
-      </div>
-    </q-form>
-
-    <q-card v-if="submitResult.length > 0" flat bordered class="q-mt-md bg-grey-2">
-      <q-card-section>Submitted form contains the following formData (key = value):</q-card-section>
-      <q-separator />
-      <q-card-section class="row q-gutter-sm items-center">
-        <div
-          v-for="(item, index) in submitResult"
-          :key="index"
-          class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
-        >
-          {{ item.name }} = {{ item.value }}
         </div>
-      </q-card-section>
-    </q-card>
-    <q-card v-if="submitResult === false" flat bordered class="q-mt-md bg-grey-2">
-      <q-card-section>Submitted form contains the following formData (key = value):</q-card-section>
-      <q-separator />
-      <q-card-section class="row q-gutter-sm items-center">
-        <div
-          v-for="(item, index) in submitResult"
-          :key="index"
-          class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
-        >
-          {{ item.name }} = {{ item.value }}
-        </div>
-      </q-card-section>
-    </q-card>
-  </div>
-  <div>
-    <div v-for="SaveResult in SaveResults" :key="SaveResult.id">
-      <ul>{{ SaveResult.id }}</ul>
-      <ul>{{ SaveResult.playerA }} </ul>
-      <ul> {{ SaveResult.playerB }}</ul>
-      <q-separator />
+        <q-btn @click="addResult" label="add event"/>
+      </q-form>
     </div>
-    <div>
-      <label for="myBrowser">Choose a browser from this list:</label>
-      <input list="browsers" v-model="item" lists="SaveResults" id="myBrowser" name="myBrowser" />
-      <datalist id="browsers">
-        <option v-for="item in SaveResults" :key="item.id" /> {{item}}
-      </datalist>
+    <q-toggle
+      :false-value="false"
+      :label="`Показываем ${redModel}`"
+      :true-value="true"
+      color="red"
+      v-model="redModel"
+    />
+    <div v-if="redModel">
+      <div class="q-pa-md" v-for="event in events" :key="event.date" style="max-width: 650px">
+        <q-card>
+          <q-toolbar class="bg-primary text-white shadow-2">
+            <q-toolbar-title>{{ event.subtitle }}</q-toolbar-title>
+          </q-toolbar>
+          <q-list v-if="event.done">
+            <q-item-section>
+              {{ event.count }}
+            </q-item-section>
+            <q-item>
+              {{ event.title }}
+            </q-item>
+            <q-item>
+              {{ event.team1 }}-{{ event.team2 }}
+            </q-item>
+          </q-list>
+          <q-tabs
+            v-model="tab"
+            class="bg-teal text-yellow shadow-2"
+          >
+            <q-tab  @click="countUpEvent(event.id)" name="mails" icon="arrow_upward" />
+            <q-tab @click="addResult(event.id)" name="alarms" icon="done" />
+            <q-tab @click="deleteResult(event.id)" name="movies" icon="delete" />
+          </q-tabs>
+        </q-card>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from 'src/firebase'
 
+const addPlayerA = ref('')
+const addPlayerB = ref('')
 // NewsCard block
 const saveResultCollectionRef = collection(db, 'resultMatch')
 const saveResultCollectionQuery = query(saveResultCollectionRef, orderBy('date', 'desc'))
+
+const addResult = () => {
+  addDoc(saveResultCollectionRef, {
+    playerA: addPlayerA.value,
+    playerB: addPlayerB.value,
+    date: Date.now()
+  })
+  addPlayerA.value = ''
+  addPlayerB.value = ''
+  console.log('add todo', addPlayerA.value)
+}
+
+const deleteResult = id => {
+  deleteDoc(doc(saveResultCollectionRef, id))
+}
 
 export default {
   name: 'SaveResultMatch',
@@ -115,6 +114,10 @@ export default {
       name: ref('Player A'),
       name2: ref('Player B'),
       SaveResults,
+      deleteResult,
+      addResult,
+      addPlayerA,
+      addPlayerB,
       item,
       submitResult,
       onSubmitCheck,
