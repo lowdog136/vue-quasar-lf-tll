@@ -1,16 +1,19 @@
 <template>
   <div class="q-gutter-md">
+    <p> Список игроков: </p>
     <div v-for="SaveResult in LeaderBoards" :key="SaveResult.id">
       <ul>id: {{ SaveResult.id }}</ul>
       <ul>player_name: {{ SaveResult.title }} </ul>
       <ul>player_score: {{ SaveResult.score }} </ul>
       <q-separator />
     </div>
-    <q-form @submit="onSubmit" class="q-gutter-md">
-      <div>
-        <q-btn label="Show tables" type="submit" color="primary"/>
-      </div>
-    </q-form>
+    <q-toggle
+      :false-value="false"
+      :label="`Показываем ${redModel}`"
+      :true-value="true"
+      color="red"
+      v-model="redModel"
+    />
   </div>
 </template>
 
@@ -49,6 +52,7 @@ export default {
     return {
       val: ref(true),
       val2: ref(true),
+      redModel: ref(true),
       LeaderBoards,
       item,
       submitResult,
