@@ -2,7 +2,8 @@
   <div class="q-gutter-md">
     <div v-for="SaveResult in LeaderBoards" :key="SaveResult.id">
       <ul>id: {{ SaveResult.id }}</ul>
-      <ul>playerA: {{ SaveResult.title }} </ul>
+      <ul>player_name: {{ SaveResult.title }} </ul>
+      <ul>player_score: {{ SaveResult.score }} </ul>
       <q-separator />
     </div>
     <q-form @submit="onSubmit" class="q-gutter-md">
@@ -18,9 +19,8 @@ import { ref, onMounted } from 'vue'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { db } from 'src/firebase'
 
-// NewsCard block
 const saveResultCollectionRef = collection(db, 'playerList')
-const saveResultCollectionQuery = query(saveResultCollectionRef, orderBy('date', 'desc'))
+const saveResultCollectionQuery = query(saveResultCollectionRef, orderBy('score', 'desc'))
 
 export default {
   name: 'LeaderBoardTable',
@@ -36,10 +36,11 @@ export default {
         querySnapshot.forEach((doc) => {
           const NewsCard = {
             id: doc.id,
-            title: doc.data().title
+            title: doc.data().title,
+            score: doc.data().score
           }
           fbSaveResult.push(NewsCard)
-          console.log(NewsCard)
+          console.log(NewsCard.score)
         })
         LeaderBoards.value = fbSaveResult
       })
