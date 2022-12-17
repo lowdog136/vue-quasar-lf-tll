@@ -20,41 +20,13 @@
         <q-btn @click="addResult" label="add event"/>
       </q-form>
     </div>
-    <q-toggle
-      :false-value="false"
-      :label="`Показываем ${redModel}`"
-      :true-value="true"
-      color="red"
-      v-model="redModel"
-    />
-    <div v-if="redModel">
-      <div class="q-pa-md" v-for="event in events" :key="event.date" style="max-width: 650px">
-        <q-card>
-          <q-toolbar class="bg-primary text-white shadow-2">
-            <q-toolbar-title>{{ event.subtitle }}</q-toolbar-title>
-          </q-toolbar>
-          <q-list v-if="event.done">
-            <q-item-section>
-              {{ event.count }}
-            </q-item-section>
-            <q-item>
-              {{ event.title }}
-            </q-item>
-            <q-item>
-              {{ event.team1 }}-{{ event.team2 }}
-            </q-item>
-          </q-list>
-          <q-tabs
-            v-model="tab"
-            class="bg-teal text-yellow shadow-2"
-          >
-            <q-tab  @click="countUpEvent(event.id)" name="mails" icon="arrow_upward" />
-            <q-tab @click="addResult(event.id)" name="alarms" icon="done" />
-            <q-tab @click="deleteResult(event.id)" name="movies" icon="delete" />
-          </q-tabs>
-        </q-card>
-      </div>
-    </div>
+  </div>
+  <div v-for="item in SaveResults" :key="item.id">
+    <ul>
+      <p> {{ item.playerA }}</p>
+      <p> {{ item.playerB }}</p>
+      <q-separator />
+    </ul>
   </div>
 </template>
 
@@ -119,6 +91,7 @@ export default {
       addPlayerA,
       addPlayerB,
       item,
+      redModel: ref(true),
       submitResult,
       onSubmitCheck,
 
